@@ -1,0 +1,24 @@
+🚀 Deployment Steps (Requires Server Access)
+When migrating from localhost to your production server, execute these commands via SSH terminal in your web root path:
+
+1..Install Dependencies:
+bash
+composer install --no-dev --optimize-autoloader
+
+
+2..Create Secure Data Directory (Outside public_html/htdocs):
+bash
+# E.g. creating it one level above your public root
+mkdir -p /var/www/stay-better-data
+chmod 750 /var/www/stay-better-data
+chown www-data:www-data /var/www/stay-better-data
+
+
+3..Update Path Config: Modify line 19 in api/subscribe.php to point to the production private directory (/var/www/stay-better-data).
+
+
+4..Backups (Cron Job): To automate backups of the subscriber list, add a Cron Job using crontab -e:
+bash
+# Example: Backup every midnight
+0 0 * * * cp /var/www/stay-better-data/subscribers.xlsx /var/www/stay-better-data/backups/subscribers_$(date +\%Y\%m\%d).xlsx
+3:21 PM
